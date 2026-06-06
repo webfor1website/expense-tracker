@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.env
+*.json
+!package.json
+!vite.config.js
+!vercel.json
+!tailwind.config.js
+!postcss.config.js
+node_modules/
+dist/
+.DS_Store
+*.tmp
+.expenses_undo.json
+expenses.json
+venv/
+frontend/.env.local
