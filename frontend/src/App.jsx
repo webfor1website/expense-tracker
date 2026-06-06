@@ -27,16 +27,15 @@ export default function App() {
       const filtered = await getExpenses(cleanFilters);
       setExpenses(Array.isArray(filtered) ? filtered : []);
       
-      const bd = await getBreakdown({
-        from_date: filters.from_date || undefined,
-        to_date: filters.to_date || undefined
-      });
+      // Only send date filters if they have values
+      const dateFilters = {};
+      if (filters.from_date) dateFilters.from_date = filters.from_date;
+      if (filters.to_date) dateFilters.to_date = filters.to_date;
+      
+      const bd = await getBreakdown(dateFilters);
       setBreakdown(bd);
       
-      const mo = await getMonthly({
-        from_date: filters.from_date || undefined,
-        to_date: filters.to_date || undefined
-      });
+      const mo = await getMonthly(dateFilters);
       setMonthly(mo);
     } catch (err) {
       console.error('Failed to fetch data:', err);
