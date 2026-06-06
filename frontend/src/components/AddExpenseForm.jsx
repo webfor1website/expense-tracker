@@ -14,7 +14,13 @@ export default function AddExpenseForm({ onAdd }) {
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
-    getCategories().then(setCategories);
+    getCategories()
+      .then(setCategories)
+      .catch(err => {
+        console.error('Failed to load categories:', err);
+        // Fallback categories if API fails
+        setCategories(['food', 'transport', 'housing', 'utilities', 'health', 'entertainment', 'shopping', 'education', 'travel', 'other']);
+      });
   }, []);
 
   const validate = () => {
