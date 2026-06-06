@@ -18,20 +18,32 @@ export default function App() {
   });
 
   const fetchData = async () => {
-    const filtered = await getExpenses(filters);
-    setExpenses(filtered);
-    
-    const bd = await getBreakdown({
-      from_date: filters.from_date,
-      to_date: filters.to_date
-    });
-    setBreakdown(bd);
-    
-    const mo = await getMonthly({
-      from_date: filters.from_date,
-      to_date: filters.to_date
-    });
-    setMonthly(mo);
+    try {
+      // Remove empty filter values
+      const cleanFilters = Object.fromEntries(
+        Object.entries(filters).filter(([_, v]) => v !== '')
+      );
+      
+      const filtered = await getExpenses(cleanFilters);
+      setExpenses(Array.isArray(filtered) ? filtered : []);
+      
+      const bd = await getBreakdown({
+        from_date: filters.from_date || undefined,
+        to_date: filters.to_date || undefined
+      });
+      setBreakdown(bd);
+      
+      const mo = await getMonthly({
+        from_date: filters.from_date || undefined,
+        to_date: filters.to_date || undefined
+      });
+      setMonthly(mo);
+    } catch (err) {
+      console.error('Failed to fetch data:', err);
+      setExpenses([]);
+      setBreakdown(null);
+      setMonthly(null);
+    }
   };
 
   useEffect(() => {
