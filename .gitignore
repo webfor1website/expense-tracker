@@ -14,4 +14,3 @@ dist/
 .expenses_undo.json
 expenses.json
 venv/
-frontend/.env.local
